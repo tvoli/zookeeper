@@ -21,7 +21,7 @@ set(email user@zookeeper.apache.org)
 set(description "zookeeper C client")
 
 # general options
-include_directories(include tests generated ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+include_directories(include tests generated ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR})
 if(UNIX)
   add_compile_options(-Wall -fPIC)
 elseif(WIN32)
@@ -73,7 +73,7 @@ endfunction()
 
 # include file checks
 foreach(f generated/zookeeper.jute.h generated/zookeeper.jute.c)
-  if(EXISTS "${CMAKE_SOURCE_DIR}/${f}")
+  if(EXISTS "${PROJECT_SOURCE_DIR}/${f}")
     to_have(${f} name)
     set(${name} 1)
   else()
@@ -145,7 +145,7 @@ include(CheckStructHasMember)
 check_struct_has_member("struct sockaddr_in6" sin6_addr "netinet/in.h" ZOO_IPV6_ENABLED)
 
 # configure
-configure_file(cmake_config.h.in ${CMAKE_SOURCE_DIR}/include/config.h)
+configure_file(cmake_config.h.in ${PROJECT_SOURCE_DIR}/include/config.h)
 
 # hashtable library
 set(hashtable_sources src/hashtable/hashtable_itr.c src/hashtable/hashtable.c)
@@ -220,7 +220,7 @@ endif()
 if(WANT_CPPUNIT)
   add_executable(zktest ${test_sources})
   target_compile_definitions(zktest
-    PRIVATE -DZKSERVER_CMD="${CMAKE_SOURCE_DIR}/tests/zkServer.sh")
+    PRIVATE -DZKSERVER_CMD="${PROJECT_SOURCE_DIR}/tests/zkServer.sh")
   # TODO: Use `find_library()` for `cppunit`.
   target_link_libraries(zktest zookeeper cppunit dl)
 
@@ -237,6 +237,6 @@ if(WANT_CPPUNIT)
   enable_testing()
   add_test(NAME zktest_runner COMMAND zktest)
   set_property(TEST zktest_runner PROPERTY ENVIRONMENT
-    "ZKROOT=${CMAKE_SOURCE_DIR}/../.."
+    "ZKROOT=${PROJECT_SOURCE_DIR}/../.."
     "CLASSPATH=$CLASSPATH:$CLOVER_HOME/lib/clover.jar")
 endif()
