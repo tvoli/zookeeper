@@ -176,6 +176,7 @@ target_link_libraries(zookeeper PUBLIC
   hashtable
   $<$<PLATFORM_ID:Linux>:rt> # clock_gettime
   $<$<PLATFORM_ID:Windows>:ws2_32>) # Winsock 2.0
+target_include_directories(zookeeper PUBLIC include generated)
 
 if(WANT_SYNCAPI AND NOT WIN32)
   find_package(Threads REQUIRED)
